@@ -15,11 +15,11 @@ router.post(
       console.log('begin');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).send(errors.array());
+       throw Error('Invalid email or password !');
     }
 
     const { email, password } = req.body;
-
+    throw Error('Something is wrong in database');
     return res.send({some: 'toto'});
   }
 );
