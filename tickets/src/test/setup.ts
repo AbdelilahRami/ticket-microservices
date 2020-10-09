@@ -1,30 +1,38 @@
-import {MongoMemoryServer} from 'mongodb-memory-server';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import {app } from '../app';
+import request from 'supertest';
+import { app } from '../app';
 
- let mongo: any ;
-beforeAll(async()=> {
-    process.env.JWT_KEY= 'asdaf';
-    mongo = new MongoMemoryServer();
-    const mongoUri= await mongo.getUri();
-    console.log('uri ', mongoUri);
-    await mongoose.connect(mongoUri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-
-});
-
-beforeEach(async ()=> {
-    const collections= await mongoose.connection.db.collections();
-    for (let collection of collections) {
-        await collection.deleteMany({});
+declare global {
+  namespace NodeJS {
+    interface Global {
+      signin(): Promise<string[]>;
     }
+  }
+}
 
+let mongo: any;
+beforeAll(async () => {
+  process.env.JWT_KEY = 'asdf';
+
+  mongo = new MongoMemoryServer();
+  const mongoUri = await mongo.getUri();
+
+  await mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 });
 
-afterAll(async()=> {
-    await mongo.stop();
-    await mongoose.connection.close()
+beforeEach(async () => {
+  const collections = await mongoose.connection.db.collections();
 
-})
+  for (let collection of collections) {
+    await collection.deleteMany({});
+  }
+});
+
+afterAll(async () => {
+  await mongo.stop();
+  await mongoose.connection.close();
+})  
