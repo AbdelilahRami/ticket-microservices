@@ -1,6 +1,5 @@
-import { currentUser } from './../middlewares/current-user';
+import { currentUser } from '@arstickets/common';
 import express from 'express';
-import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 router.get('/api/users/currentuser', currentUser, (req, res)=> {

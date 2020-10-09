@@ -1,9 +1,9 @@
-import { requestValidator } from "./../middlewares/validate-request";
+import { requestValidator } from "@arstickets/common";
 
 import express, { Request, Response, NextFunction } from "express";
 import { body } from "express-validator";
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/bad-request-error";
+import { BadRequestError } from "@arstickets/common";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
