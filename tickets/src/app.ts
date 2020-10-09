@@ -1,4 +1,3 @@
-import { errorHandler } from '@arstickets/common';
 import express from 'express';
 import { json, urlencoded } from 'body-parser';
 
