@@ -24,7 +24,7 @@ build:
         manual:
           - src: '**/*.js'
             dest: .
-    - image: ramiabdelilah/autticketsh
+    - image: ramiabdelilah/tickets
       context: tickets
       docker:
         dockerfile: Dockerfile
