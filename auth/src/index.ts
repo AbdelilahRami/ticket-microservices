@@ -5,8 +5,11 @@ const start = async () => {
     if(!process.env.JWT_KEY){
         throw new Error('secret key must be provided');
     }
+    if (!process.env.MONGO_URI) {
+        throw new Error('MONGO_URI must be defined in auth');
+    }
     try {
-        await mongoose.connect('mongodb://auth-mongo-srv:27017/db', {
+        await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
