@@ -1,4 +1,4 @@
-import { errorHandler } from './middlewares/error-handler';
+import { errorHandler } from '@arstickets/common';
 import express from 'express';
 import { json, urlencoded } from 'body-parser';
 import { currentUserRouter } from './routes/current-user';
