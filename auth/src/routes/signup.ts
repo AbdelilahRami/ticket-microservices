@@ -30,11 +30,11 @@ router.post(
       { id: user.id, email: user.email },
       process.env.JWT_KEY!
     );
-
+      console.log('USER JWT ', userJwt);
     req.session = {
       jwt: userJwt,
     };
-
+    console.log('req.session ', req.session.jwt);
     res.status(201).send(user);
   }
 );
