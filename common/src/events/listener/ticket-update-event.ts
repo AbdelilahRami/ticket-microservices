@@ -8,6 +8,4 @@ interface TicketUpdateEvent{
         price: number,
         userId: string
     }
-
-
 }
