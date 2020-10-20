@@ -28,6 +28,7 @@ export abstract class Listener<T extends Event> {
                 .setDurableName(this.queueGroupName)
     }
 
+    
     listen(){
         const subscription = this.client.subscribe(
             this.subject,

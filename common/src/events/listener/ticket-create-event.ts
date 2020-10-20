@@ -1,4 +1,5 @@
 import { Subjects } from '../Subjects';
+
 export interface TicketCreateEvent {
     subject: Subjects.TicketCreated;
     data : {

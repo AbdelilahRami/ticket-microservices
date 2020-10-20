@@ -15,6 +15,7 @@ export abstract class Publisher<T extends Event> {
     constructor(client: Stan){
         this.client = client;
     }
+    
 
     publish(data: T['data']): Promise<void>{
 
