@@ -1,4 +1,4 @@
-import { currentUser } from '@arstickets/common';
+import { currentUser } from '@arstickets/common/build/common/src';
 import express from 'express';
 
 const router = express.Router();

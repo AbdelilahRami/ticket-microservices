@@ -1,6 +1,6 @@
 import { Password } from "./../services/password-operations";
-import { BadRequestError } from "@arstickets/common";
-import { requestValidator } from "@arstickets/common";
+import { BadRequestError } from "@arstickets/common/build/common/src";
+import { requestValidator } from "@arstickets/common/build/common/src";
 import { body } from "express-validator";
 import express, { Request, Response, NextFunction } from "express";
 import { User } from "../models/user";
