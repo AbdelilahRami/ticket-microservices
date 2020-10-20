@@ -1,7 +1,7 @@
+import { natsWrapper } from './nats-wrapper';
 import mongoose from 'mongoose';
 
 import {app} from './app';
-
 const start = async () => {
     if(!process.env.JWT_KEY){
         throw new Error('secret key must be provided');
@@ -11,6 +11,13 @@ const start = async () => {
     }
 
     try {
+        await natsWrapper.connect('ticketing', 'dfkrkfkf', 'http://nats-srv:4222');
+        natsWrapper.client.on('close', () => {
+            console.log('NATS connection closed!');
+            process.exit();
+          });
+          process.on('SIGINT', () => natsWrapper.client.close());
+          process.on('SIGTERM', () => natsWrapper.client.close());
         await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
