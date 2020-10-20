@@ -1,3 +1,5 @@
+import { natsWrapper } from '../nats-wrapper';
+import { TicketUpdatePublisher } from './../events/publishers/ticket-updated-publisher';
 import express, { Request, Response } from 'express';
 import { requireAuth, requestValidator, NotFoundError, NotAuthorizedError } from '@arstickets/common';
 import { body } from 'express-validator';
@@ -23,6 +25,12 @@ router.put('/api/tickets/:id', requireAuth, [
     });
     ticket.save();
 
+    new TicketUpdatePublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId
+    })
     res.send(ticket);
 
 });

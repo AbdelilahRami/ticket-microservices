@@ -1,5 +1,5 @@
-import {Subjects, Publisher, TicketUpdateEvent} from '@arstickets/common/build/common/src';
+import {Subjects, Publisher, TicketUpdateEvent} from '@arstickets/common';
 
-export class TicketUpdatePublisher extends Publisher<TicketCreateEvent> {
-    subject: Subjects.TicketCreated = Subjects.TicketCreated;
+export class TicketUpdatePublisher extends Publisher<TicketUpdateEvent> {
+    subject: Subjects.TicketUpdated = Subjects.TicketUpdated;
 }
