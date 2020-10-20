@@ -1,5 +1,4 @@
-import { Subjects } from './../../../../nats-test/src/events/Subjects';
-import { Listener } from "./base-listener";
+import { Subjects } from '../Subjects';
 interface TicketUpdateEvent{
     subject : Subjects.TicketUpdated;
     data : {
