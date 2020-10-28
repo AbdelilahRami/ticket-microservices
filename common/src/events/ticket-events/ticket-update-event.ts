@@ -6,5 +6,6 @@ export interface TicketUpdateEvent {
     title: string;
     price: number;
     userId: string;
+    version: number;
   };
 }
