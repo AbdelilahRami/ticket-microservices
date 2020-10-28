@@ -12,8 +12,11 @@ export * from "./middlewares/validate-request";
 
 export * from "./events/Subjects";
 export * from "./events/listener/base-listener";
-export * from "./events/listener/ticket-create-event";
-export * from "./events/listener/ticket-update-event";
+export * from "./events/ticket-events/ticket-create-event";
+export * from "./events/ticket-events/ticket-update-event";
 export * from "./events/publisher/base-publisher";
 
 export * from "./shared/types/order-status";
+
+export * from './events/order-events/create-order-event';
+export * from './events/order-events/cancel-order-event';
