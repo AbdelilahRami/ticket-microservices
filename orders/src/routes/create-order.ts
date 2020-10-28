@@ -1,3 +1,4 @@
+import { natsWrapper } from "./../nats-wrapper";
 import { OrderStatus, currentUser, BadRequestError } from "@arstickets/common";
 import mongoose from "mongoose";
 import { body } from "express-validator";
@@ -9,6 +10,7 @@ import {
 } from "@arstickets/common";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
+import OrderCreatedPublisher from "../events/publisher/order-created-publisher";
 const router = express.Router();
 
 router.post(
@@ -41,6 +43,16 @@ router.post(
       ticket: ticket,
     });
     order.save();
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      userId: order.userId,
+      ticket: {
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+      },
+      expiresAt: expiration.toISOString(),
+    });
     res.status(201).send(order);
   }
 );
