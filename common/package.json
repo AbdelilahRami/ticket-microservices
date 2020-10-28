@@ -1,6 +1,6 @@
 {
   "name": "@arstickets/common",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "clean": "del-cli ./build/*",
-    "build": "npm run clean",
+    "build": "npm run clean && tsc",
     "pub": "git add . && git commit -m \"updates\" && npm version patch && npm run build && npm publish "
   },
   "keywords": [],
