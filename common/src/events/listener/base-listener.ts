@@ -1,7 +1,7 @@
-import { Subjects } from "../Subjects";
 import { Message, Stan } from "node-nats-streaming";
+import { Subjects } from "../Subjects";
 
-export interface Event {
+interface Event {
   subject: Subjects;
   data: any;
 }
@@ -12,6 +12,7 @@ export abstract class Listener<T extends Event> {
   abstract onMessage(data: T["data"], msg: Message): void;
   private client: Stan;
   protected ackWait = 5 * 1000;
+
   constructor(client: Stan) {
     this.client = client;
   }
@@ -33,11 +34,10 @@ export abstract class Listener<T extends Event> {
     );
 
     subscription.on("message", (msg: Message) => {
-      console.log(
-        `Massage received: ${this.subject} / ${this.queueGroupName} `
-      );
-      const data = this.parseMessage(msg);
-      this.onMessage(data, msg);
+      console.log(`Message received: ${this.subject} / ${this.queueGroupName}`);
+
+      const parsedData = this.parseMessage(msg);
+      this.onMessage(parsedData, msg);
     });
   }
 
