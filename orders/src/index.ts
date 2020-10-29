@@ -1,9 +1,9 @@
-import { natsWrapper } from "./nats-wrapper";
-import TicktCreatedListener from "./events/listener/ticket-created-listener";
 import mongoose from "mongoose";
-
 import { app } from "./app";
-import TicketUpdatedListener from "./events/listener/ticket-updated-listener";
+import { natsWrapper } from "./nats-wrapper";
+import { TicketCreatedListener } from "./events/listener/ticket-created-listener";
+import { TicketUpdatedListener } from "./events/listener/ticket-updated-listener";
+
 const start = async () => {
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be defined");
@@ -34,7 +34,7 @@ const start = async () => {
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
 
-    new TicktCreatedListener(natsWrapper.client).listen();
+    new TicketCreatedListener(natsWrapper.client).listen();
     new TicketUpdatedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI, {
@@ -42,11 +42,13 @@ const start = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-  } catch (error) {
-    console.error("Error in db ", error);
+    console.log("Connected to MongoDb");
+  } catch (err) {
+    console.error(err);
   }
+
   app.listen(3000, () => {
-    console.log("Listening to port 3000 !");
+    console.log("Listening on port 3000!!!!!!!!");
   });
 };
 
