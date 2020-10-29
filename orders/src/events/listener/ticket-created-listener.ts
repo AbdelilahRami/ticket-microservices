@@ -4,7 +4,7 @@ import { Ticket } from "../../models/ticket";
 
 export default class TicketCreatedListener extends Listener<TicketCreateEvent> {
   subject: Subjects.TicketCreated = Subjects.TicketCreated;
-  queueGroupName = "order:service";
+  queueGroupName = 'order:service';
 
   async onMessage(data: TicketCreateEvent['data'], msg: Message) {
     console.log("TOTOT");

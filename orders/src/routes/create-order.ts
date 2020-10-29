@@ -1,5 +1,5 @@
 import { natsWrapper } from "../nats-wrapper";
-import { OrderStatus, currentUser, BadRequestError } from "@arstickets/common";
+import { OrderStatus, currentUser, BadRequestError } from "@arstickets/common/build";
 import mongoose from "mongoose";
 import { body } from "express-validator";
 import express, { Request, Response } from "express";
@@ -7,7 +7,7 @@ import {
   requireAuth,
   requestValidator,
   NotFoundError,
-} from "@arstickets/common";
+} from "@arstickets/common/build";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
 import OrderCreatedPublisher from "../events/publisher/order-created-publisher";
