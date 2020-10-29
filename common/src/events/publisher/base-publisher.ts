@@ -18,11 +18,11 @@ export abstract class Publisher<T extends Event> {
   publish(data: T["data"]): Promise<void> {
     return new Promise((resolve, reject) => {
       this.client.publish(this.subject, JSON.stringify(data), (err) => {
+        console.log("subject ", this.subject);
         if (err) {
           reject(err);
         }
         resolve();
-        console.log("Publish event ! In abstract");
       });
     });
   }
