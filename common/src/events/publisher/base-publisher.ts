@@ -1,36 +1,29 @@
-import { rejects } from 'assert';
-import { Stan } from 'node-nats-streaming';
-import { resolve } from 'path';
-import { Subjects } from '../Subjects';
-
+import { rejects } from "assert";
+import { Stan } from "node-nats-streaming";
+import { resolve } from "path";
+import { Subjects } from "../Subjects";
 
 interface Event {
-    subject: Subjects,
-    data: any,
+  subject: Subjects;
+  data: any;
 }
 
 export abstract class Publisher<T extends Event> {
-    client: Stan;
-    abstract subject: T['subject'];
-    constructor(client: Stan){
-        this.client = client;
-    }
-    
+  client: Stan;
+  abstract subject: T["subject"];
+  constructor(client: Stan) {
+    this.client = client;
+  }
 
-    publish(data: T['data']): Promise<void>{
-
-        return new Promise((resolve, reject)=> {
-            this.client.publish(this.subject, JSON.stringify(data), (err)=> {
-                if(err){
-                    reject(err);
-                }
-                resolve();
-                console.log('Publish event ! In abstract');
-            });
-
-        })
-        
-    }
-
-
+  publish(data: T["data"]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.client.publish(this.subject, JSON.stringify(data), (err) => {
+        if (err) {
+          reject(err);
+        }
+        resolve();
+        console.log("Publish event ! In abstract");
+      });
+    });
+  }
 }

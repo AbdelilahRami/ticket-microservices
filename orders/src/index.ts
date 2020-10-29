@@ -3,6 +3,7 @@ import TicktCreatedListener from "./events/listener/ticket-created-listener";
 import mongoose from "mongoose";
 
 import { app } from "./app";
+import TicketUpdatedListener from "./events/listener/ticket-updated-listener";
 const start = async () => {
   if (!process.env.JWT_KEY) {
     throw new Error("secret key must be provided");
@@ -12,7 +13,11 @@ const start = async () => {
   }
 
   try {
-    await natsWrapper.connect("toto", "dfkrkfkfoiiu", "http://nats-srv:4222");
+    await natsWrapper.connect(
+      "ticketing",
+      "dfkrkfkfoiiu",
+      "http://nats-srv:4222"
+    );
     natsWrapper.client.on("close", () => {
       console.log("NATS connection closed!");
       process.exit();
@@ -21,6 +26,7 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
 
     new TicktCreatedListener(natsWrapper.client).listen();
+    new TicketUpdatedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
