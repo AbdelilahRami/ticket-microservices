@@ -1,5 +1,5 @@
 import { natsWrapper } from "./nats-wrapper";
-import TicktCreatedListener  from "./events/listener/ticket-created-listener";
+import TicktCreatedListener from "./events/listener/ticket-created-listener";
 import mongoose from "mongoose";
 
 import { app } from "./app";
@@ -12,11 +12,7 @@ const start = async () => {
   }
 
   try {
-    await natsWrapper.connect(
-      "ticketing",
-      "dfkrkfkfoiiu",
-      "http://nats-srv:4222"
-    );
+    await natsWrapper.connect("toto", "dfkrkfkfoiiu", "http://nats-srv:4222");
     natsWrapper.client.on("close", () => {
       console.log("NATS connection closed!");
       process.exit();

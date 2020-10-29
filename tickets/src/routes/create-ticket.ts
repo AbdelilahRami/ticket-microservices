@@ -1,19 +1,19 @@
-import { natsWrapper } from './../nats-wrapper';
-import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
-import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
-import { requireAuth, requestValidator } from '@arstickets/common';
-import { Ticket } from '../models/ticket';
+import { natsWrapper } from "./../nats-wrapper";
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import express, { Request, Response } from "express";
+import { body } from "express-validator";
+import { requireAuth, requestValidator } from "@arstickets/common";
+import { Ticket } from "../models/ticket";
 const router = express.Router();
 
 router.post(
-  '/api/tickets',
+  "/api/tickets",
   requireAuth,
   [
-    body('title').not().isEmpty().withMessage('Title is required'),
-    body('price')
+    body("title").not().isEmpty().withMessage("Title is required"),
+    body("price")
       .isFloat({ gt: 0 })
-      .withMessage('Price must be greater than 0'),
+      .withMessage("Price must be greater than 0"),
   ],
   requestValidator,
   async (req: Request, res: Response) => {
@@ -29,8 +29,9 @@ router.post(
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,
-      userId: ticket.userId
-    })
+      userId: ticket.userId,
+      version: ticket.version,
+    });
     res.status(201).send(ticket);
   }
 );
