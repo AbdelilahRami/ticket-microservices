@@ -1,4 +1,4 @@
-import { natsWrapper } from "./../nats-wrapper";
+import { natsWrapper } from "../nats-wrapper";
 import { OrderStatus, currentUser, BadRequestError } from "@arstickets/common";
 import mongoose from "mongoose";
 import { body } from "express-validator";
