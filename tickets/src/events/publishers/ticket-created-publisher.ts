@@ -1,5 +1,5 @@
-import {Subjects, Publisher, TicketCreateEvent} from '@arstickets/common';
+import { Subjects, Publisher, TicketCreateEvent } from '@arstickets/common';
 
 export class TicketCreatedPublisher extends Publisher<TicketCreateEvent> {
-    subject: Subjects.TicketCreated = Subjects.TicketCreated;
+  subject: Subjects.TicketCreated = Subjects.TicketCreated;
 }

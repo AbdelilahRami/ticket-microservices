@@ -1,22 +1,22 @@
-import { natsWrapper } from "../nats-wrapper";
-import { TicketUpdatePublisher } from "./../events/publishers/ticket-updated-publisher";
-import express, { Request, Response } from "express";
+import { natsWrapper } from '../nats-wrapper';
+import { TicketUpdatePublisher } from './../events/publishers/ticket-updated-publisher';
+import express, { Request, Response } from 'express';
 import {
   requireAuth,
   requestValidator,
   NotFoundError,
   NotAuthorizedError,
-} from "@arstickets/common";
-import { body } from "express-validator";
-import { Ticket } from "../models/ticket";
+} from '@arstickets/common';
+import { body } from 'express-validator';
+import { Ticket } from '../models/ticket';
 const router = express.Router();
 
 router.put(
-  "/api/tickets/:id",
+  '/api/tickets/:id',
   requireAuth,
   [
-    body("title").not().isEmpty().withMessage("Title is required !"),
-    body("price").not().isEmpty().withMessage("price is required !"),
+    body('title').not().isEmpty().withMessage('Title is required !'),
+    body('price').not().isEmpty().withMessage('price is required !'),
   ],
   requestValidator,
   async (req: Request, res: Response) => {
@@ -35,13 +35,13 @@ router.put(
     });
     ticket.save();
 
-    new TicketUpdatePublisher(natsWrapper.client).publish({
-      id: ticket.id,
-      title: ticket.title,
-      price: ticket.price,
-      userId: ticket.userId,
-      version: ticket.version,
-    });
+    // new TicketUpdatePublisher(natsWrapper.client).publish({
+    //   id: ticket.id,
+    //   title: ticket.title,
+    //   price: ticket.price,
+    //   userId: ticket.userId,
+    //   //version: ticket.version,
+    // });
     res.send(ticket);
   }
 );

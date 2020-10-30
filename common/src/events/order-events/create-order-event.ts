@@ -1,4 +1,4 @@
-import { Subjects } from "../Subjects";
+import { Subjects } from '../Subjects';
 
 export interface OrderCreatedEvent {
   subject: Subjects.OrderCreated;
@@ -10,6 +10,6 @@ export interface OrderCreatedEvent {
       title: string;
       price: number;
     };
-    expiresAt: string
+    expiresAt: string;
   };
 }
