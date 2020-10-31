@@ -1,6 +1,6 @@
 {
   "name": "@arstickets/common",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -12,7 +12,6 @@
     "build": "npm run clean && tsc",
     "pub": "git add . && git commit -m \"updates\" && npm version patch && npm run build && npm publish "
   },
-  
   "keywords": [],
   "author": "",
   "license": "ISC",
