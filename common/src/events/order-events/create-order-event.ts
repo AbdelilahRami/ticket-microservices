@@ -9,6 +9,7 @@ export interface OrderCreatedEvent {
       id: string;
       title: string;
       price: number;
+      version:number
     };
     expiresAt: string;
   };
