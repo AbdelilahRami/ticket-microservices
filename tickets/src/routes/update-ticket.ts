@@ -34,14 +34,14 @@ router.put(
       price: price,
     });
     ticket.save();
-
-    // new TicketUpdatePublisher(natsWrapper.client).publish({
-    //   id: ticket.id,
-    //   title: ticket.title,
-    //   price: ticket.price,
-    //   userId: ticket.userId,
-    //   //version: ticket.version,
-    // });
+    console.log('Ticket service after update version ', ticket.version);
+    new TicketUpdatePublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+      version: ticket.version,
+    });
     res.send(ticket);
   }
 );
