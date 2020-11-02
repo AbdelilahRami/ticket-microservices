@@ -8,8 +8,9 @@ export interface OrderCancelledEvent {
       id: string;
       price: number;
       title: string;
-      version: number
     };
     expiresAt: string;
+    version: number;
+
   };
 }

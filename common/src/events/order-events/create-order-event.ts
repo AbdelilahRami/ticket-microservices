@@ -5,11 +5,11 @@ export interface OrderCreatedEvent {
   data: {
     id: string;
     userId: string;
+    version: number;
     ticket: {
       id: string;
       title: string;
       price: number;
-      version:number
     };
     expiresAt: string;
   };
