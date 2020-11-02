@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
-import {OrderStatus} from '@arstickets/common';
-import {TicketDoc} from './ticket';
+import mongoose from 'mongoose';
+import { OrderStatus } from '@arstickets/common';
+import { TicketDoc } from './ticket';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 interface OrderAttributes {
   userId: string;
   status: OrderStatus;
@@ -13,6 +14,7 @@ interface OrderDoc extends mongoose.Document {
   status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
+  version: number;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -29,7 +31,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: Object.values(OrderStatus),
-      default: OrderStatus.Created
+      default: OrderStatus.Created,
     },
     expiresAt: {
       type: mongoose.Schema.Types.Date,
@@ -37,7 +39,7 @@ const orderSchema = new mongoose.Schema(
     },
     ticket: {
       type: mongoose.Types.ObjectId,
-      ref: "Ticket",
+      ref: 'Ticket',
     },
   },
   {
@@ -49,11 +51,13 @@ const orderSchema = new mongoose.Schema(
     },
   }
 );
+orderSchema.set('versionKey', 'version');
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (attributes: OrderAttributes) => {
   return new Order(attributes);
 };
 
-const Order = mongoose.model<OrderDoc, OrderModel>("Order", orderSchema);
+const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 
 export { Order };
