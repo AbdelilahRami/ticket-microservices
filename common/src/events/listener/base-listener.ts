@@ -10,7 +10,7 @@ export abstract class Listener<T extends Event> {
   abstract subject: T['subject'];
   abstract queueGroupName: string;
   abstract onMessage(data: T['data'], msg: Message): void;
-  private client: Stan;
+  protected client: Stan;
   protected ackWait = 60 * 1000;
 
   constructor(client: Stan) {
@@ -31,7 +31,7 @@ export abstract class Listener<T extends Event> {
     console.log('subject ', this.subject);
     const subscription = this.client.subscribe(
       this.subject,
-      this.queueGroupName,
+      this.queueGroupName
     );
     subscription.on('message', (msg: Message) => {
       console.log(`Message received: ${this.subject} / ${this.queueGroupName}`);
