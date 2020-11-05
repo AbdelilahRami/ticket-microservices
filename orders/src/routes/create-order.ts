@@ -1,26 +1,30 @@
-import { natsWrapper } from "../nats-wrapper";
-import { OrderStatus, currentUser, BadRequestError } from "@arstickets/common/build";
-import mongoose from "mongoose";
-import { body } from "express-validator";
-import express, { Request, Response } from "express";
+import { natsWrapper } from '../nats-wrapper';
+import {
+  OrderStatus,
+  currentUser,
+  BadRequestError,
+} from '@arstickets/common/build';
+import mongoose from 'mongoose';
+import { body } from 'express-validator';
+import express, { Request, Response } from 'express';
 import {
   requireAuth,
   requestValidator,
   NotFoundError,
-} from "@arstickets/common/build";
-import { Ticket } from "../models/ticket";
-import { Order } from "../models/order";
-import OrderCreatedPublisher from "../events/publisher/order-created-publisher";
+} from '@arstickets/common/build';
+import { Ticket } from '../models/ticket';
+import { Order } from '../models/order';
+import OrderCreatedPublisher from '../events/publisher/order-created-publisher';
 const router = express.Router();
 
 router.post(
-  "/api/orders",
+  '/api/orders',
   requireAuth,
-  [body("ticketId").not().isEmpty().withMessage("ticketId must be provided ")],
+  [body('ticketId').not().isEmpty().withMessage('ticketId must be provided ')],
   requestValidator,
   async (req: Request, res: Response) => {
     const { ticketId } = req.body;
-
+    console.log('the id ', ticketId);
     const ticket = await Ticket.findById(ticketId);
 
     if (!ticket) {
@@ -29,8 +33,8 @@ router.post(
 
     const isReserved = await ticket.isReserved();
     if (isReserved) {
-      console.log("ReserVed");
-      throw new BadRequestError("Ticket already reserved");
+      console.log('ReserVed');
+      throw new BadRequestError('Ticket already reserved');
     }
 
     const expiration = new Date();
@@ -42,7 +46,9 @@ router.post(
       expiresAt: expiration,
       ticket: ticket,
     });
-    order.save();
+
+    await order.save();
+
     new OrderCreatedPublisher(natsWrapper.client).publish({
       id: order.id,
       userId: order.userId,
@@ -51,8 +57,10 @@ router.post(
         title: ticket.title,
         price: ticket.price,
       },
+      version: order.version,
       expiresAt: expiration.toISOString(),
     });
+
     res.status(201).send(order);
   }
 );
