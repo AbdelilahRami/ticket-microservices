@@ -24,7 +24,6 @@ router.post(
   requestValidator,
   async (req: Request, res: Response) => {
     const { ticketId } = req.body;
-    console.log('the id ', ticketId);
     const ticket = await Ticket.findById(ticketId);
 
     if (!ticket) {
@@ -33,7 +32,6 @@ router.post(
 
     const isReserved = await ticket.isReserved();
     if (isReserved) {
-      console.log('ReserVed');
       throw new BadRequestError('Ticket already reserved');
     }
 
