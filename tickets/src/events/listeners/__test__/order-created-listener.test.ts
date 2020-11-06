@@ -23,8 +23,8 @@ const setup = async () => {
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,
-      version: ticket.version,
     },
+    version: ticket.version,
     expiresAt: 'expiration',
   };
   //@ts-ignore
