@@ -1,3 +1,4 @@
+import { TicketUpdatePublisher } from './../publishers/ticket-updated-publisher';
 import { Message } from 'node-nats-streaming';
 import { Listener, OrderCreatedEvent, Subjects } from '@arstickets/common';
 import { Ticket } from '../../models/ticket';
@@ -14,7 +15,14 @@ export class OrderCreatedListner extends Listener<OrderCreatedEvent> {
 
     ticket.set({ orderId: data.id });
     await ticket.save();
-
+    new TicketUpdatePublisher(this.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+      orderId: ticket.orderId,
+      version: ticket.version
+    })
     message.ack();
   }
 }
