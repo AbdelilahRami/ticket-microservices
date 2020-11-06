@@ -5,8 +5,9 @@ import { Ticket } from '../../models/ticket';
 
 export class OrderCreatedListner extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
-  queueGroupName: string = '';
+  queueGroupName: string = 'tickets-service';
   async onMessage(data: OrderCreatedEvent['data'], message: Message) {
+    console.log('Listening from tickets service');
     const ticket = await Ticket.findById(data.ticket.id);
 
     if (!ticket) {
@@ -15,14 +16,14 @@ export class OrderCreatedListner extends Listener<OrderCreatedEvent> {
 
     ticket.set({ orderId: data.id });
     await ticket.save();
-    new TicketUpdatePublisher(this.client).publish({
-      id: ticket.id,
-      title: ticket.title,
-      price: ticket.price,
-      userId: ticket.userId,
-      orderId: ticket.orderId,
-      version: ticket.version
-    })
+    // await new TicketUpdatePublisher(this.client).publish({
+    //   id: ticket.id,
+    //   title: ticket.title,
+    //   price: ticket.price,
+    //   userId: ticket.userId,
+    //   orderId: ticket.orderId,
+    //   version: ticket.version,
+    // });
     message.ack();
   }
 }

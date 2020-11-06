@@ -14,7 +14,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     }
 
     ticket.set({ orderId: undefined });
-    ticket.save();
+    await ticket.save();
 
     message.ack();
   }
