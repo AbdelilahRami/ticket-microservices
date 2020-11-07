@@ -33,7 +33,7 @@ router.put(
       title: title,
       price: price,
     });
-    ticket.save();
+    await ticket.save();
     console.log('Ticket service after update version ', ticket.version);
     new TicketUpdatePublisher(natsWrapper.client).publish({
       id: ticket.id,
