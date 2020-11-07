@@ -32,10 +32,6 @@ const start = async () => {
       process.exit();
     });
 
-    const subscription = natsWrapper.client.subscribe('order: created');
-    subscription.on('message', (msg) => {
-      console.log('Message recieved');
-    });
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
 
