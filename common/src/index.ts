@@ -22,3 +22,5 @@ export * from './events/order-events/create-order-event';
 export * from './events/order-events/cancel-order-event';
 
 export * from './events/expiration-events/expiration-completed';
+
+export * from './events/payment-events/payment-created-event';
