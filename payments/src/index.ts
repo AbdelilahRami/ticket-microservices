@@ -1,3 +1,4 @@
+import { OrderCancelledListener } from './../../tickets/src/events/listeners/order-cancel-listener';
 import { natsWrapper } from './nats-wrapper';
 import mongoose from 'mongoose';
 
@@ -35,6 +36,7 @@ const start = async () => {
     process.on('SIGTERM', () => natsWrapper.client.close());
 
     new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
