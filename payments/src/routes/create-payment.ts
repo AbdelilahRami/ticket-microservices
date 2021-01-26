@@ -1,3 +1,4 @@
+import { natsWrapper } from './../../../orders/src/nats-wrapper';
 import { BadRequestError } from '@arstickets/common';
 import express, { request, Request, Response } from 'express';
 import {
@@ -10,6 +11,8 @@ import {
 import { body } from 'express-validator';
 import { Order } from '../models/order';
 import Stripe from 'stripe';
+import { Payment } from '../models/payment';
+import { PaymentCreatedPublisher } from '../events/publishers/payment-created-publisher';
 
 const router = express.Router();
 
@@ -40,12 +43,22 @@ router.post(
       apiVersion: '2020-08-27',
     });
 
-    await stripe.charges.create({
+    const charge = await stripe.charges.create({
       currency: 'usd',
       amount: order.price * 1000,
       source: token,
     });
+    const payment = Payment.build({
+      orderId,
+      stripeId: charge.id,
+    });
+    await payment.save();
 
+    new PaymentCreatedPublisher(natsWrapper.client).publish({
+      id: payment.id,
+      orderId: payment.orderId,
+      stripeId:payment.stripeId,
+    })
     res.send({ success: true });
   }
 );
